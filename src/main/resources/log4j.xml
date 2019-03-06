@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration  status="WARN">
+    <!--LOG LEVEL: TRACE DEBUG INFO WARN ERROR FETAL-->
+
+    <!--输出源-->
+    <Appenders>
+        <!--输出到控制台配置-->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %c{-3} - %msg%n"/>
+        </Console>
+        <!--输出到文件配置-->
+        <File name="LogFile" fileName="logs/output-quartz.log" append="false">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %c{-3} - %msg%n" charset="utf-8"/>
+        </File>
+        <!--文件大小到达指定尺寸的时候产生一个新的文件-->
+        <RollingFile name="RollingFileInfo" fileName="logs/quartz.log" filePattern="logs/$${date:yyyy-MM}/quartz_%d{yyyy-MM-dd}_%i.log">
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PAtternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %c{-3} - %msg%n" charset="utf-8"/>
+            <Policies>
+                <!--基于时间触发-->
+                <TimeBasedTriggeringPolicy/>
+                <!--基于文件大小触发 阈值为20MB-->
+                <SizeBasedTriggeringPolicy size="20MB"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+
+    <!--记录器-->
+    <Loggers>
+        <Logger name="ac.demo.quartz" level="DEBUG"/>
+        <Root level="WARN">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="LogFile"/>
+            <AppenderRef ref="RollingFileInfo"/>
+        </Root>
+    </Loggers>
+</Configuration>
